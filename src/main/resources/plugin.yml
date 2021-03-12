@@ -1,5 +1,6 @@
 name: Stats
 version: ${project.version}
 main: net.royalmind.stats.Stats
+load: STARTUP
 authors: [ImSrPanda]
 description: Controlador de estadisticas

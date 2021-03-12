@@ -1,7 +1,9 @@
 Enable-worlds:
   - 'world_1'
 
+# Es muy util si el pvp es en el mismo mundo en el que salen y entran
+# Si se tiene un spawn o varios mundos de pvp es mejor desactivarlo
 Data:
   Keep:
-    Enable: true
+    Enable: false
     Time-Minutes: 10

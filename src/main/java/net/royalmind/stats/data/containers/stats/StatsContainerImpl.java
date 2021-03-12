@@ -5,6 +5,7 @@ import net.royalmind.stats.data.containers.AbstractDataMap;
 import net.royalmind.stats.data.containers.threads.ThreadsContainerImpl;
 import net.royalmind.stats.data.containers.threads.ThreadsDataContainer;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -12,18 +13,34 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class StatsContainerImpl extends AbstractDataMap<UUID, StatsDataContainer> {
 
     public StatsContainerImpl() { }
 
-    private void loadData(final Player player, final DataSource dataSource, final ArrayList<String> worlds, final JavaPlugin plugin) {
-        if (!(worlds.contains(player.getWorld().getName()))) {
-            remove(player.getUniqueId());
-            return;
+    public void loadWorld(final World world, final DataSource dataSource, final JavaPlugin plugin) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                dataSource.execute(conn -> {
+                    final String query = "CALL addWorld(?);";
+                    final PreparedStatement statement = conn.prepareStatement(query);
+                    statement.setString(1, world.getName());
+                    statement.execute();
+                    return null;
+                });
+            }
+        }.runTaskAsynchronously(plugin);
+    }
+
+    public void loadData(final Player player, final DataSource dataSource, final List<String> worlds, final JavaPlugin plugin) {
+        final UUID uniqueId = player.getUniqueId();
+        if (contains(uniqueId)) {
+            remove(uniqueId);
         }
+        if (!(worlds.contains(player.getWorld().getName()))) return;
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -39,14 +56,16 @@ public class StatsContainerImpl extends AbstractDataMap<UUID, StatsDataContainer
                     statement = conn.prepareStatement(query);
                     statement.setString(1, "*");
                     statement.setString(2, player.getUniqueId().toString());
-                    statement.setString(2, player.getLocation().getWorld().getName());
+                    statement.setString(3, player.getLocation().getWorld().getName());
                     final ResultSet resultSet = statement.executeQuery();
+                    /*
+                    int idWorld = resultSet.getInt("idWorld");
 
                     query = "CALL getWorldByID(?)";
                     statement = conn.prepareStatement(query);
-                    statement.setInt(1, resultSet.getInt("idWorld"));
-                    final String worldName = statement.executeQuery().getString("name");
-
+                    statement.setInt(1, idWorld);
+                    final String worldName = statement.executeQuery().getString("name");*/
+                    if (!(resultSet.next())) return null;
                     set(
                             player.getUniqueId(),
                             new StatsDataContainer(
@@ -54,7 +73,7 @@ public class StatsContainerImpl extends AbstractDataMap<UUID, StatsDataContainer
                                     resultSet.getInt("kills"),
                                     resultSet.getInt("deaths"),
                                     resultSet.getInt("bestKillStreak"),
-                                    worldName
+                                    player.getLocation().getWorld().getName()
                             )
                     );
                     return null;
@@ -113,21 +132,26 @@ public class StatsContainerImpl extends AbstractDataMap<UUID, StatsDataContainer
 
     public void addKill(final Player player) {
         final UUID uniqueId = player.getUniqueId();
+        if (!(contains(uniqueId))) return;
         final StatsDataContainer statsDataContainer = get(uniqueId);
         statsDataContainer.setKills(statsDataContainer.getKills() + 1);
     }
 
     public void addDeath(final Player player) {
         final UUID uniqueId = player.getUniqueId();
+        if (!(contains(uniqueId))) return;
         final StatsDataContainer statsDataContainer = get(uniqueId);
         statsDataContainer.setDeaths(statsDataContainer.getDeaths() + 1);
     }
 
-    public void updateBestKillStreak(final Player player, final int killStreak) {
+    public void updateBestKillStreak(final Player player) {
         final UUID uniqueId = player.getUniqueId();
+        if (!(contains(uniqueId))) return;
         final StatsDataContainer statsDataContainer = get(uniqueId);
-        if (killStreak > statsDataContainer.getBestKillStreak()) {
-            statsDataContainer.setBestKillStreak(killStreak);
+        final int currentKillStreak = statsDataContainer.getCurrentKillStreak() + 1;
+        statsDataContainer.setCurrentKillStreak(currentKillStreak);
+        if (currentKillStreak> statsDataContainer.getBestKillStreak()) {
+            statsDataContainer.setBestKillStreak(currentKillStreak);
         }
     }
 }
