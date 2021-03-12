@@ -31,4 +31,16 @@ public class StatsDataContainer {
     public int getBestKillStreak() {
         return bestKillStreak;
     }
+
+    public void setKills(int kills) {
+        this.kills = kills;
+    }
+
+    public void setDeaths(int deaths) {
+        this.deaths = deaths;
+    }
+
+    public void setBestKillStreak(int bestKillStreak) {
+        this.bestKillStreak = bestKillStreak;
+    }
 }

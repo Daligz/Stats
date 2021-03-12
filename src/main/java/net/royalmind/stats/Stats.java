@@ -24,5 +24,6 @@ public final class Stats extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        this.dataSource.close();
     }
 }
