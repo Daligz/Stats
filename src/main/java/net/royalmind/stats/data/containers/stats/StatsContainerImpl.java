@@ -144,10 +144,14 @@ public class StatsContainerImpl extends AbstractDataMap<UUID, StatsDataContainer
         statsDataContainer.setDeaths(statsDataContainer.getDeaths() + 1);
     }
 
-    public void updateBestKillStreak(final Player player) {
+    public void updateBestKillStreak(final Player player, final Boolean isDead) {
         final UUID uniqueId = player.getUniqueId();
         if (!(contains(uniqueId))) return;
         final StatsDataContainer statsDataContainer = get(uniqueId);
+        if (isDead) {
+            statsDataContainer.setCurrentKillStreak(0);
+            return;
+        }
         final int currentKillStreak = statsDataContainer.getCurrentKillStreak() + 1;
         statsDataContainer.setCurrentKillStreak(currentKillStreak);
         if (currentKillStreak> statsDataContainer.getBestKillStreak()) {

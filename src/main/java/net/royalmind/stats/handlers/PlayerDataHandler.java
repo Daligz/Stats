@@ -61,8 +61,10 @@ public class PlayerDataHandler implements Listener {
     @EventHandler
     public void onPlayerGetKillStreak(final PlayerDeathEvent event) {
         final Player killer = event.getEntity().getKiller();
-        if (killer == null || killer == event.getEntity().getPlayer()) return;
-        this.statsContainer.updateBestKillStreak(killer);
+        final Player victim = event.getEntity().getPlayer();
+        if (killer == null || killer == victim) return;
+        this.statsContainer.updateBestKillStreak(killer, false);
+        this.statsContainer.updateBestKillStreak(victim, true);
     }
 
     @EventHandler
