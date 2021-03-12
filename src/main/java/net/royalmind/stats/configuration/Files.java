@@ -13,6 +13,12 @@ public class Files {
         this.loadDirectory();
     }
 
+    public long reload() {
+        final long currentTimeMillis = System.currentTimeMillis();
+        loadDirectory();
+        return (System.currentTimeMillis() - currentTimeMillis);
+    }
+
     private void loadDirectory() {
         this.config = new ConfigurationFile(this.plugin, "config");
     }
