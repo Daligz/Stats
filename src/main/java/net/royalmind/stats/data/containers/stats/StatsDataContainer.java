@@ -8,12 +8,14 @@ public class StatsDataContainer {
     private int kills;
     private int deaths;
     private int bestKillStreak;
+    private String world;
 
-    public StatsDataContainer(final UUID uuid, final int kills, final int deaths, final int bestKillStreak) {
+    public StatsDataContainer(final UUID uuid, final int kills, final int deaths, final int bestKillStreak, final String world) {
         this.uuid = uuid;
         this.kills = kills;
         this.deaths = deaths;
         this.bestKillStreak = bestKillStreak;
+        this.world = world;
     }
 
     public UUID getUuid() {
@@ -30,6 +32,10 @@ public class StatsDataContainer {
 
     public int getBestKillStreak() {
         return bestKillStreak;
+    }
+
+    public String getWorld() {
+        return world;
     }
 
     public void setKills(int kills) {
