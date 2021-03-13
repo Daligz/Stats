@@ -4,6 +4,7 @@ main: net.royalmind.stats.Stats
 load: STARTUP
 authors: [ImSrPanda]
 description: Controlador de estadisticas
+softdepend: [HolographicDisplays]
 commands:
   rstats:
     usage: /stats
