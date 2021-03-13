@@ -2,6 +2,7 @@ package net.royalmind.stats.handlers;
 
 import net.royalmind.stats.data.DataSource;
 import net.royalmind.stats.data.containers.stats.StatsContainerImpl;
+import net.royalmind.stats.data.containers.threads.ThreadsContainerImpl;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,13 +20,15 @@ public class PlayerDataHandler implements Listener {
 
     private DataSource dataSource;
     private StatsContainerImpl statsContainer;
+    private ThreadsContainerImpl threadsContainer;
     private JavaPlugin plugin;
     private FileConfiguration config;
 
     public PlayerDataHandler(final DataSource dataSource, final StatsContainerImpl statsContainer,
-                             final FileConfiguration config, final JavaPlugin plugin) {
+                             final ThreadsContainerImpl threadsContainer, final FileConfiguration config, final JavaPlugin plugin) {
         this.dataSource = dataSource;
         this.statsContainer = statsContainer;
+        this.threadsContainer = threadsContainer;
         this.config = config;
         this.plugin = plugin;
     }
@@ -69,7 +72,13 @@ public class PlayerDataHandler implements Listener {
 
     @EventHandler
     public void onPlayerLeave(final PlayerQuitEvent event) {
-        this.statsContainer.close(event.getPlayer(), this.dataSource, this.plugin);
+        final Player player = event.getPlayer();
+        final boolean isKeepDataEnable = this.config.getBoolean("Data.Keep.Enable");
+        if (isKeepDataEnable) {
+            this.statsContainer.closeAndKeep(player, this.dataSource, this.plugin, this.config, this.threadsContainer);
+        } else {
+            this.statsContainer.close(player, this.dataSource, this.plugin);
+        }
     }
 
     @EventHandler

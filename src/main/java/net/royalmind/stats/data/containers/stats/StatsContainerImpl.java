@@ -58,13 +58,7 @@ public class StatsContainerImpl extends AbstractDataMap<UUID, StatsDataContainer
                     statement.setString(2, player.getUniqueId().toString());
                     statement.setString(3, player.getLocation().getWorld().getName());
                     final ResultSet resultSet = statement.executeQuery();
-                    /*
-                    int idWorld = resultSet.getInt("idWorld");
 
-                    query = "CALL getWorldByID(?)";
-                    statement = conn.prepareStatement(query);
-                    statement.setInt(1, idWorld);
-                    final String worldName = statement.executeQuery().getString("name");*/
                     if (!(resultSet.next())) return null;
                     set(
                             player.getUniqueId(),

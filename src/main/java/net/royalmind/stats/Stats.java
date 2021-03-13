@@ -31,7 +31,8 @@ public final class Stats extends JavaPlugin {
     private void registerEvents() {
         final PluginManager pluginManager = getServer().getPluginManager();
         final FileConfiguration config = this.files.getConfig().getFileConfiguration();
-        pluginManager.registerEvents(new PlayerDataHandler(this.dataSource, this.statsContainer, config, this), this);
+        pluginManager.registerEvents(new PlayerDataHandler(this.dataSource, this.statsContainer,
+                this.threadsContainer, config, this), this);
     }
 
     @Override
