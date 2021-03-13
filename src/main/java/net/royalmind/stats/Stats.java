@@ -1,5 +1,6 @@
 package net.royalmind.stats;
 
+import net.royalmind.stats.commands.StatsCommand;
 import net.royalmind.stats.configuration.Files;
 import net.royalmind.stats.data.DataSource;
 import net.royalmind.stats.data.containers.stats.StatsContainerImpl;
@@ -26,6 +27,7 @@ public final class Stats extends JavaPlugin {
         this.threadsContainer = new ThreadsContainerImpl();
         this.statsContainer = new StatsContainerImpl();
         registerEvents();
+        registerCommands();
     }
 
     private void registerEvents() {
@@ -33,6 +35,10 @@ public final class Stats extends JavaPlugin {
         final FileConfiguration config = this.files.getConfig().getFileConfiguration();
         pluginManager.registerEvents(new PlayerDataHandler(this.dataSource, this.statsContainer,
                 this.threadsContainer, config, this), this);
+    }
+
+    private void registerCommands() {
+        getServer().getPluginCommand("rstats").setExecutor(new StatsCommand(this.files));
     }
 
     @Override

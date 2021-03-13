@@ -4,3 +4,7 @@ main: net.royalmind.stats.Stats
 load: STARTUP
 authors: [ImSrPanda]
 description: Controlador de estadisticas
+commands:
+  rstats:
+    usage: /stats
+    description: /stats for help
