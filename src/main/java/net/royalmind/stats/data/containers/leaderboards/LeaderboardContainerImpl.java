@@ -2,6 +2,7 @@ package net.royalmind.stats.data.containers.leaderboards;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
 import net.royalmind.stats.configuration.ConfigurationFile;
 import net.royalmind.stats.data.containers.AbstractDataMap;
 import net.royalmind.stats.utils.Chat;
@@ -40,8 +41,8 @@ public class LeaderboardContainerImpl extends AbstractDataMap<UUID, LeaderboardD
         final Hologram hologramMonthly = HologramsAPI.createHologram(this.plugin, location);
         final int timeLifetime = fileConfiguration.getInt("Leaderboard.Lifetime.TimeToUpdate");
         final int timeMonthly = fileConfiguration.getInt("Leaderboard.Monthly.TimeToUpdate");
-        configuration(fileConfiguration, hologramLifetime, true);
-        configuration(fileConfiguration, hologramMonthly, false);
+        configuration(fileConfiguration, hologramLifetime, uuid, true);
+        configuration(fileConfiguration, hologramMonthly, uuid, false);
         set(
                 uuid,
                 new LeaderboardDataContainer(
@@ -53,7 +54,8 @@ public class LeaderboardContainerImpl extends AbstractDataMap<UUID, LeaderboardD
         }
     }
 
-    private void configuration(final FileConfiguration fileConfiguration, final Hologram hologram, final Boolean isLifetime) {
+    private void configuration(final FileConfiguration fileConfiguration, final Hologram hologram,
+                               final UUID uuid, final Boolean isLifetime) {
         if (!(isLifetime)) {
             hologram.getVisibilityManager().setVisibleByDefault(false);
         }
@@ -61,6 +63,20 @@ public class LeaderboardContainerImpl extends AbstractDataMap<UUID, LeaderboardD
         final String rootPath = "Leaderboard." + key + ".";
         final List<String> text = fileConfiguration.getStringList(rootPath + "Text");
         for (final String line : text) {
+            if (line.contains("%clickable_switch%")) {
+                final String replace = line.replace("%clickable_switch%", "");
+                final TextLine textLine = hologram.appendTextLine(Chat.translate(replace));
+                textLine.setTouchHandler(player -> {
+                    final LeaderboardDataContainer leaderboardDataContainer = get(uuid);
+                    hologram.getVisibilityManager().hideTo(player);
+                    if (isLifetime) {
+                        leaderboardDataContainer.getHologramMonthly().getVisibilityManager().showTo(player);
+                    } else {
+                        leaderboardDataContainer.getHologramLifetime().getVisibilityManager().showTo(player);
+                    }
+                });
+                continue;
+            }
             hologram.appendTextLine(Chat.translate(line));
         }
     }
