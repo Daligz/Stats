@@ -7,6 +7,7 @@ public class Files {
     private final JavaPlugin plugin;
 
     private ConfigurationFile config;
+    private ConfigurationFile configLeaderboard;
 
     public Files(final JavaPlugin plugin) {
         this.plugin = plugin;
@@ -16,6 +17,7 @@ public class Files {
     public long reload() {
         final long currentTimeMillis = System.currentTimeMillis();
         loadDirectory();
+        loadBefore();
         return (System.currentTimeMillis() - currentTimeMillis);
     }
 
@@ -23,7 +25,15 @@ public class Files {
         this.config = new ConfigurationFile(this.plugin, "config");
     }
 
+    public void loadBefore() {
+        this.configLeaderboard = new ConfigurationFile(this.plugin, "leaderboard");
+    }
+
     public ConfigurationFile getConfig() {
         return config;
+    }
+
+    public ConfigurationFile getConfigLeaderboard() {
+        return configLeaderboard;
     }
 }

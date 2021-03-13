@@ -1,0 +1,17 @@
+#timeToUpdate = seconds
+#timeToUpdate = -1 | To disable update
+Leaderboard:
+  Lifetime:
+    TimeToUpdate: 30
+    Text:
+      - '&b&lRoyalMind TOP &7(Lifetime)'
+      - ''
+      - '%top_1%'
+  Monthly:
+    TimeToUpdate: -1
+    Text:
+      - '&b&lRoyalMind TOP &7(Monthly)'
+      - ''
+      - '%top_1%'
+
+Holograms:

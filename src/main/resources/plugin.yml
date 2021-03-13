@@ -7,5 +7,4 @@ description: Controlador de estadisticas
 softdepend: [HolographicDisplays]
 commands:
   rstats:
-    usage: /stats
-    description: /stats for help
+    description: yep

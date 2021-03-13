@@ -3,12 +3,14 @@ package net.royalmind.stats;
 import net.royalmind.stats.commands.StatsCommand;
 import net.royalmind.stats.configuration.Files;
 import net.royalmind.stats.data.DataSource;
+import net.royalmind.stats.data.containers.leaderboards.LeaderboardContainerImpl;
 import net.royalmind.stats.data.containers.stats.StatsContainerImpl;
 import net.royalmind.stats.data.containers.threads.ThreadsContainerImpl;
 import net.royalmind.stats.handlers.PlayerDataHandler;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public final class Stats extends JavaPlugin {
 
@@ -18,16 +20,26 @@ public final class Stats extends JavaPlugin {
     //Containers
     private StatsContainerImpl statsContainer;
     private ThreadsContainerImpl threadsContainer;
+    private LeaderboardContainerImpl leaderboardContainer;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
+        final JavaPlugin instance = this;
         this.files = new Files(this);
         this.dataSource = new DataSource(this);
         this.threadsContainer = new ThreadsContainerImpl();
         this.statsContainer = new StatsContainerImpl();
-        registerEvents();
-        registerCommands();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                files.loadBefore();
+                leaderboardContainer = new LeaderboardContainerImpl(files.getConfigLeaderboard(), instance);
+                leaderboardContainer.loadAll();
+                registerEvents();
+                registerCommands();
+            }
+        }.runTaskLater(this, 5L);
     }
 
     private void registerEvents() {
@@ -38,7 +50,7 @@ public final class Stats extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getServer().getPluginCommand("rstats").setExecutor(new StatsCommand(this.files));
+        getCommand("rstats").setExecutor(new StatsCommand(this.files, this.leaderboardContainer));
     }
 
     @Override
