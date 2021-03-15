@@ -9,3 +9,13 @@ Data:
     Time-Minutes: 10
   Top:
     Time-Seconds: 60
+
+Chat:
+  Hover:
+    - '&aName: &f%rs_name%_n'
+    - '&aKills: &f%rs_kills%_n'
+    - '&aDeaths: &f%rs_deaths%_n'
+    - '&aBest ks: &f%rs_bestkillstreak%_n'
+    - '&aCurrent ks: &f%rs_currentkillstreak%'
+  Message: '%player% > %message%'
+  ColoredMessage-Permission: 'rstats.chat.coloredmessages'
