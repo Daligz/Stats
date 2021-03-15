@@ -3,6 +3,7 @@ package net.royalmind.stats.data.containers;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class AbstractDataMap<K, V> {
 
@@ -30,5 +31,9 @@ public abstract class AbstractDataMap<K, V> {
 
     public Collection<V> getValues() {
         return this.dataMap.values();
+    }
+
+    public Set<K> getKeys() {
+        return this.dataMap.keySet();
     }
 }

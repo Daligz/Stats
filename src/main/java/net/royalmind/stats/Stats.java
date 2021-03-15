@@ -6,6 +6,7 @@ import net.royalmind.stats.data.DataSource;
 import net.royalmind.stats.data.containers.leaderboards.LeaderboardContainerImpl;
 import net.royalmind.stats.data.containers.stats.StatsContainerImpl;
 import net.royalmind.stats.data.containers.threads.ThreadsContainerImpl;
+import net.royalmind.stats.data.containers.top.TopsContainerImpl;
 import net.royalmind.stats.handlers.PlayerDataHandler;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
@@ -21,6 +22,7 @@ public final class Stats extends JavaPlugin {
     private StatsContainerImpl statsContainer;
     private ThreadsContainerImpl threadsContainer;
     private LeaderboardContainerImpl leaderboardContainer;
+    private TopsContainerImpl topsContainer;
 
     @Override
     public void onEnable() {
@@ -30,12 +32,12 @@ public final class Stats extends JavaPlugin {
         this.dataSource = new DataSource(this);
         this.threadsContainer = new ThreadsContainerImpl();
         this.statsContainer = new StatsContainerImpl();
+        this.topsContainer = new TopsContainerImpl(this, this.dataSource, this.files.getConfig().getFileConfiguration());
         new BukkitRunnable() {
             @Override
             public void run() {
                 files.loadBefore();
-                leaderboardContainer = new LeaderboardContainerImpl(files.getConfigLeaderboard(), instance);
-                leaderboardContainer.loadAll();
+                leaderboardContainer = new LeaderboardContainerImpl(files.getConfigLeaderboard(), topsContainer, instance);
                 registerEvents();
                 registerCommands();
             }

@@ -7,3 +7,5 @@ Data:
   Keep:
     Enable: false
     Time-Minutes: 10
+  Top:
+    Time-Seconds: 60
