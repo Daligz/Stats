@@ -8,6 +8,7 @@ import net.royalmind.stats.data.containers.AbstractDataMap;
 import net.royalmind.stats.data.containers.top.TopsContainerImpl;
 import net.royalmind.stats.data.containers.top.TopsDataContainer;
 import net.royalmind.stats.utils.Chat;
+import net.royalmind.stats.utils.Sounds;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -143,6 +144,7 @@ public class LeaderboardContainerImpl extends AbstractDataMap<UUID, LeaderboardD
                     } else {
                         leaderboardDataContainer.getHologramLifetime().getVisibilityManager().showTo(player);
                     }
+                    player.playSound(player.getLocation(), Sounds.CLICK.bukkitSound(), 0.2f, 1.5f);
                 });
             } else {
                 hologram.insertTextLine(posLine, Chat.translate(line));
