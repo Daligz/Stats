@@ -1,15 +1,22 @@
 Enable-worlds:
   - 'world_1'
 
-# Es muy util si el pvp es en el mismo mundo en el que salen y entran
-# Si se tiene un spawn o varios mundos de pvp es mejor desactivarlo
 Data:
+  # Es muy util si el pvp es en el mismo mundo en el que salen y entran
+  # Si se tiene un spawn o varios mundos de pvp es mejor desactivarlo
   Keep:
     Enable: false
     Time-Minutes: 10
   Top:
     Time-Seconds: 60
+    # Limite de cuantos jugadores se obtendran de la bd por top
     Limit-To-Show: 10
+    # Los datos de los jugadores se actualizan cuando salen por que se envian
+    # a la bd, con esta opcion lo que se hace es juntar las kills de la bd
+    # con las de la memoria (cache), pero es solo algo visual, y puede crear
+    # confusiones, por que si una persona aumenta en el top, se mostrara hasta
+    # que salga del juego
+    Simulate-RealTime: false
 
 Chat:
   Hover:

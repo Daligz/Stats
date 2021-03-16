@@ -32,7 +32,8 @@ public final class Stats extends JavaPlugin {
         this.dataSource = new DataSource(this);
         this.threadsContainer = new ThreadsContainerImpl();
         this.statsContainer = new StatsContainerImpl();
-        this.topsContainer = new TopsContainerImpl(this, this.dataSource, this.files.getConfig().getFileConfiguration());
+        this.topsContainer = new TopsContainerImpl(this, this.dataSource,
+                this.files.getConfig().getFileConfiguration(), this.statsContainer);
         registerEvents();
         registerCommands();
         new BukkitRunnable() {

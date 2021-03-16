@@ -56,7 +56,7 @@ public class LeaderboardContainerImpl extends AbstractDataMap<UUID, LeaderboardD
                 }
             }.runTaskTimer(this.plugin, 0L, 20 * timeMonthly);
         }
-        }
+    }
 
     public void loadAll() {
         final FileConfiguration fileConfiguration = this.configLeaderboard.getFileConfiguration();
