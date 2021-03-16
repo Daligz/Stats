@@ -35,7 +35,7 @@ public final class Stats extends JavaPlugin {
         this.threadsContainer = new ThreadsContainerImpl();
         this.statsContainer = new StatsContainerImpl();
         this.topsContainer = new TopsContainerImpl(this, this.dataSource,
-                this.files.getConfig().getFileConfiguration(), this.statsContainer);
+                this.files.getConfig().getFileConfiguration());
         dependeciesLoader();
         registerEvents();
         registerCommands();

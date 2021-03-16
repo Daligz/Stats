@@ -2,8 +2,6 @@ package net.royalmind.stats.data.containers.top;
 
 import net.royalmind.stats.data.DataSource;
 import net.royalmind.stats.data.containers.AbstractConcurrentDataMap;
-import net.royalmind.stats.data.containers.stats.StatsContainerImpl;
-import net.royalmind.stats.data.containers.stats.StatsDataContainer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -19,13 +17,11 @@ public class TopsContainerImpl extends AbstractConcurrentDataMap<String, TopsDat
     private JavaPlugin plugin;
     private DataSource dataSource;
     private FileConfiguration config;
-    private StatsContainerImpl statsContainer;
 
-    public TopsContainerImpl(final JavaPlugin plugin, final DataSource dataSource, final FileConfiguration config, final StatsContainerImpl statsContainer) {
+    public TopsContainerImpl(final JavaPlugin plugin, final DataSource dataSource, final FileConfiguration config) {
         this.plugin = plugin;
         this.dataSource = dataSource;
         this.config = config;
-        this.statsContainer = statsContainer;
         update();
     }
 
@@ -69,15 +65,15 @@ public class TopsContainerImpl extends AbstractConcurrentDataMap<String, TopsDat
                         while (resultSet.next()) {
                             final String name = resultSet.getString("name");
                             final String killsColumnLabel = (isLifetime) ? "total" : "kills";
-                            int kills = resultSet.getInt(killsColumnLabel) ;
+                            final int kills = resultSet.getInt(killsColumnLabel) ;
                             final String identifier = createIdentifier(worldName, place, isLifetime);
                             final UUID dataUUID = UUID.nameUUIDFromBytes(identifier.getBytes());
-                            final boolean simulateRealtime = config.getBoolean("Data.Top.Simulate-RealTime");
+                            /*final boolean simulateRealtime = config.getBoolean("Data.Top.Simulate-RealTime");
                             final UUID uuid = UUID.fromString(resultSet.getString("uuid"));
                             if (simulateRealtime && statsContainer.contains(uuid)) {
                                 final StatsDataContainer dataContainer = statsContainer.get(uuid);
                                 kills += dataContainer.getKills();
-                            }
+                            }*/
                             set(
                                     identifier,
                                     new TopsDataContainer(

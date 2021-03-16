@@ -15,7 +15,8 @@ Data:
     # a la bd, con esta opcion lo que se hace es juntar las kills de la bd
     # con las de la memoria (cache), pero es solo algo visual, y puede crear
     # confusiones, por que si una persona aumenta en el top, se mostrara hasta
-    # que salga del juego
+    # que salga del juego.
+    # ||OPCION DESHABILITADA||
     Simulate-RealTime: false
 
 Chat:
