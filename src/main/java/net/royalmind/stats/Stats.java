@@ -33,13 +33,13 @@ public final class Stats extends JavaPlugin {
         this.threadsContainer = new ThreadsContainerImpl();
         this.statsContainer = new StatsContainerImpl();
         this.topsContainer = new TopsContainerImpl(this, this.dataSource, this.files.getConfig().getFileConfiguration());
+        registerEvents();
+        registerCommands();
         new BukkitRunnable() {
             @Override
             public void run() {
                 files.loadBefore();
                 leaderboardContainer = new LeaderboardContainerImpl(files.getConfigLeaderboard(), topsContainer, instance);
-                registerEvents();
-                registerCommands();
             }
         }.runTaskLater(this, 5L);
     }

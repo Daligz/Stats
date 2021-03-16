@@ -109,9 +109,9 @@ public class PlayerDataHandler implements Listener {
             text = text.replace("%rs_currentkillstreak%", String.valueOf(dataContainer.getCurrentKillStreak()));
             if (text.contains("_n")) {
                 text = text.replace("_n", "");
-                textBuilder.append(Chat.translate(text) + "\n");
-            } else {
                 textBuilder.append(Chat.translate(text));
+            } else {
+                textBuilder.append(Chat.translate(text) + "\n");
             }
         }
         final String coloredPermission = this.config.getString("Chat.ColoredMessage-Permission");

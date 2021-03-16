@@ -6,12 +6,36 @@ Leaderboard:
     Text:
       - '&b&lRoyalMind TOP &7(Lifetime)'
       - ''
-      - '%top_1%'
+      - '&e1.- &6%top_name% &7- &d%top_kills%'
+      - '&e2.- &6%top_name% &7- &d%top_kills%'
+      - '&e3.- &6%top_name% &7- &d%top_kills%'
+      - '&e4.- &6%top_name% &7- &d%top_kills%'
+      - '&e5.- &6%top_name% &7- &d%top_kills%'
+      - '&e6.- &6%top_name% &7- &d%top_kills%'
+      - '&e7.- &6%top_name% &7- &d%top_kills%'
+      - '&e8.- &6%top_name% &7- &d%top_kills%'
+      - '&e9.- &6%top_name% &7- &d%top_kills%'
+      - '&e10.- &6%top_name% &7- &d%top_kills%'
+      - ''
+      - '&dLifetime'
+      - '%clickable_switch% &e&nClick to switch'
   Monthly:
-    TimeToUpdate: -1
+    TimeToUpdate: 30
     Text:
       - '&b&lRoyalMind TOP &7(Monthly)'
       - ''
-      - '%top_1%'
+      - '&e1.- &b%top_name% &7- &a%top_kills%'
+      - '&e2.- &b%top_name% &7- &a%top_kills%'
+      - '&e3.- &b%top_name% &7- &a%top_kills%'
+      - '&e4.- &b%top_name% &7- &a%top_kills%'
+      - '&e5.- &b%top_name% &7- &a%top_kills%'
+      - '&e6.- &b%top_name% &7- &a%top_kills%'
+      - '&e7.- &b%top_name% &7- &a%top_kills%'
+      - '&e8.- &b%top_name% &7- &a%top_kills%'
+      - '&e9.- &b%top_name% &7- &a%top_kills%'
+      - '&e10.- &b%top_name% &7- &a%top_kills%'
+      - ''
+      - '&6Monthly'
+      - '%clickable_switch% &e&nClick to switch'
 
 Holograms:

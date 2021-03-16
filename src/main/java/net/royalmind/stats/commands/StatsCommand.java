@@ -32,7 +32,6 @@ public class StatsCommand implements CommandExecutor {
             help(player);
         } else if (args[0].equalsIgnoreCase("reload")) {
             final long reloadTime = this.files.reload();
-            this.leaderboardContainer.reload();
             player.sendMessage(Chat.translate("&aPlugin recargado en &e" + reloadTime + " &ams"));
         } else if (args[0].equalsIgnoreCase("leaderboard")) {
             if (args[1].equalsIgnoreCase("list")) {

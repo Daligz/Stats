@@ -13,6 +13,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -88,7 +89,7 @@ public class LeaderboardContainerImpl extends AbstractDataMap<UUID, LeaderboardD
 
     private void configuration(final FileConfiguration fileConfiguration, final Hologram hologram,
                                final UUID uuid, final Boolean isLifetime, final Boolean cache) {
-        if (!(isLifetime) && !(cache)) {
+        if (isLifetime && !(cache)) {
             hologram.getVisibilityManager().setVisibleByDefault(false);
         }
         final String key = (isLifetime) ? "Lifetime" : "Monthly";
@@ -106,7 +107,7 @@ public class LeaderboardContainerImpl extends AbstractDataMap<UUID, LeaderboardD
              * %top_name% = name
              * %top_kills% = kills
              */
-            final String identifier = this.topsContainer.createIdentifier(worldName, place);
+            final String identifier = this.topsContainer.createIdentifier(worldName, place, isLifetime);
             final Boolean contains = this.topsContainer.contains(identifier);
             final TopsDataContainer topsDataContainer = this.topsContainer.get(identifier);
             if (line.contains("%top_name%")) {
@@ -161,7 +162,8 @@ public class LeaderboardContainerImpl extends AbstractDataMap<UUID, LeaderboardD
     }
 
     public void deleteAll() {
-        for (final LeaderboardDataContainer value : getValues()) {
+        final Collection<LeaderboardDataContainer> values = getValues();
+        for (final LeaderboardDataContainer value : values) {
             value.getHologramLifetime().delete();
             value.getHologramMonthly().delete();
             remove(value.getUuid());

@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
@@ -45,18 +46,20 @@ public class StatsContainerImpl extends AbstractDataMap<UUID, StatsDataContainer
             @Override
             public void run() {
                 dataSource.execute(conn -> {
-                    String query = "CALL addPlayer(?, ?, ?);";
+                    String query = "CALL addPlayer(?, ?, ?, ?);";
                     PreparedStatement statement = conn.prepareStatement(query);
                     statement.setString(1, player.getName());
                     statement.setString(2, player.getUniqueId().toString());
-                    statement.setString(3, player.getLocation().getWorld().getName());
+                    statement.setDate(3, new Date(System.currentTimeMillis()));
+                    statement.setString(4, player.getLocation().getWorld().getName());
                     statement.execute();
 
-                    query = "CALL getPlayerData(?, ?, ?);";
+                    query = "CALL getPlayerData(?, ?, ?, ?);";
                     statement = conn.prepareStatement(query);
-                    statement.setString(1, "*");
+                    statement.setString(1, "kills, deaths, bestKillStreak");
                     statement.setString(2, player.getUniqueId().toString());
-                    statement.setString(3, player.getLocation().getWorld().getName());
+                    statement.setDate(3, new Date(System.currentTimeMillis()));
+                    statement.setString(4, player.getLocation().getWorld().getName());
                     final ResultSet resultSet = statement.executeQuery();
 
                     if (!(resultSet.next())) return null;
@@ -84,13 +87,14 @@ public class StatsContainerImpl extends AbstractDataMap<UUID, StatsDataContainer
             @Override
             public void run() {
                 dataSource.execute(conn -> {
-                    final String query = "CALL updatePlayerData(?, ?, ?, ?, ?);";
+                    final String query = "CALL updatePlayerData(?, ?, ?, ?, ?, ?);";
                     final PreparedStatement statement = conn.prepareStatement(query);
                     statement.setString(1, uniqueId.toString());
                     statement.setInt(2, dataContainer.getKills());
                     statement.setInt(3, dataContainer.getDeaths());
                     statement.setInt(4, dataContainer.getBestKillStreak());
-                    statement.setString(5, dataContainer.getWorld());
+                    statement.setDate(5, new Date(System.currentTimeMillis()));
+                    statement.setString(6, dataContainer.getWorld());
                     statement.execute();
                     return null;
                 });

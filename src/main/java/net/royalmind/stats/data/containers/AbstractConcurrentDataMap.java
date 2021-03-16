@@ -1,12 +1,12 @@
 package net.royalmind.stats.data.containers;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class AbstractDataMap<K, V> {
+public abstract class AbstractConcurrentDataMap<K, V> {
 
-    private final Map<K, V> dataMap = new HashMap<>();
+    private final Map<K, V> dataMap = new ConcurrentHashMap<>();
 
     public void set(final K key, final V value) {
         this.dataMap.putIfAbsent(key, value);
