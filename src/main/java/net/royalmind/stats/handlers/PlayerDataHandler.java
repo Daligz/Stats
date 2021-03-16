@@ -1,5 +1,6 @@
 package net.royalmind.stats.handlers;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -102,11 +103,12 @@ public class PlayerDataHandler implements Listener {
         final StatsDataContainer dataContainer = this.statsContainer.get(player.getUniqueId());
         final StringBuilder textBuilder = new StringBuilder();
         for (String text : this.config.getStringList("Chat.Hover")) {
-            text = text.replace("%rs_name%", player.getName());
+            /*text = text.replace("%rs_name%", player.getName());
             text = text.replace("%rs_kills%", String.valueOf(dataContainer.getKills()));
             text = text.replace("%rs_deaths%", String.valueOf(dataContainer.getDeaths()));
             text = text.replace("%rs_bestkillstreak%", String.valueOf(dataContainer.getBestKillStreak()));
-            text = text.replace("%rs_currentkillstreak%", String.valueOf(dataContainer.getCurrentKillStreak()));
+            text = text.replace("%rs_currentkillstreak%", String.valueOf(dataContainer.getCurrentKillStreak()));*/
+            text = PlaceholderAPI.setPlaceholders(player, text);
             if (text.contains("_n")) {
                 text = text.replace("_n", "");
                 textBuilder.append(Chat.translate(text));
@@ -118,9 +120,10 @@ public class PlayerDataHandler implements Listener {
         if (player.hasPermission(coloredPermission)) {
             message = Chat.translate(message);
         }
-        final String chatFormat = this.config.getString("Chat.Message")
-                .replace("%player%", player.getName())
-                .replace("%message%", message);
+
+        final String chatFormat = PlaceholderAPI.setPlaceholders(player, this.config.getString("Chat.Message"))
+                .replace("%message%", message)
+                .replace("%player%", player.getName());
 
         TextComponent textComponent = new TextComponent(chatFormat);
         textComponent.setHoverEvent(new HoverEvent(

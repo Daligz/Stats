@@ -7,6 +7,7 @@ import net.royalmind.stats.data.containers.leaderboards.LeaderboardContainerImpl
 import net.royalmind.stats.data.containers.stats.StatsContainerImpl;
 import net.royalmind.stats.data.containers.threads.ThreadsContainerImpl;
 import net.royalmind.stats.data.containers.top.TopsContainerImpl;
+import net.royalmind.stats.dependencies.PlaceholderDependency;
 import net.royalmind.stats.handlers.PlayerDataHandler;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
@@ -23,6 +24,7 @@ public final class Stats extends JavaPlugin {
     private ThreadsContainerImpl threadsContainer;
     private LeaderboardContainerImpl leaderboardContainer;
     private TopsContainerImpl topsContainer;
+    private PlaceholderDependency placeholderDependency;
 
     @Override
     public void onEnable() {
@@ -34,6 +36,7 @@ public final class Stats extends JavaPlugin {
         this.statsContainer = new StatsContainerImpl();
         this.topsContainer = new TopsContainerImpl(this, this.dataSource,
                 this.files.getConfig().getFileConfiguration(), this.statsContainer);
+        dependeciesLoader();
         registerEvents();
         registerCommands();
         new BukkitRunnable() {
@@ -54,6 +57,12 @@ public final class Stats extends JavaPlugin {
 
     private void registerCommands() {
         getCommand("rstats").setExecutor(new StatsCommand(this.files, this.leaderboardContainer));
+    }
+
+    private void dependeciesLoader() {
+        this.placeholderDependency = new PlaceholderDependency(this.statsContainer);
+        this.placeholderDependency.register();
+        this.getLogger().info("PlaceholderAPI loaded!");
     }
 
     @Override

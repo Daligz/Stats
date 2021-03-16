@@ -25,5 +25,5 @@ Chat:
     - '&aDeaths: &f%rs_deaths%'
     - '&aBest ks: &f%rs_bestkillstreak%'
     - '&aCurrent ks: &f%rs_currentkillstreak%_n'
-  Message: '%player% > %message%'
+  Message: '&7%player% » &f%message%'
   ColoredMessage-Permission: 'rstats.chat.coloredmessages'
