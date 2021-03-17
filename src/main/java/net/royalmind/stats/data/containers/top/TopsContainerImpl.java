@@ -45,7 +45,7 @@ public class TopsContainerImpl extends AbstractConcurrentDataMap<String, TopsDat
                                 }
                             }
                         }
-                    } catch (final Exception ex) { ex.printStackTrace(); }
+                    } catch (final Exception ex) { /*ex.printStackTrace();*/ }
                     finally {
                         final String query = (isLifetime) ? "CALL getLifetimeTop(?, ?, ?, ?);" : "CALL getMonthlyTop(?, ?, ?, ?, ?)";
                         final String dataToGet = (isLifetime) ? "name, uuid" : "kills, uuid, name";

@@ -60,19 +60,31 @@ public class StatsContainerImpl extends AbstractDataMap<UUID, StatsDataContainer
                     statement.setString(2, player.getUniqueId().toString());
                     statement.setDate(3, new Date(System.currentTimeMillis()));
                     statement.setString(4, player.getLocation().getWorld().getName());
-                    final ResultSet resultSet = statement.executeQuery();
+                    ResultSet resultSet = statement.executeQuery();
 
                     if (!(resultSet.next())) return null;
-                    set(
+
+                    final StatsDataContainer dataContainer = new StatsDataContainer(
                             player.getUniqueId(),
-                            new StatsDataContainer(
-                                    player.getUniqueId(),
-                                    resultSet.getInt("kills"),
-                                    resultSet.getInt("deaths"),
-                                    resultSet.getInt("bestKillStreak"),
-                                    player.getLocation().getWorld().getName()
-                            )
+                            resultSet.getInt("kills"),
+                            resultSet.getInt("deaths"),
+                            resultSet.getInt("bestKillStreak"),
+                            player.getLocation().getWorld().getName()
                     );
+
+                    query = "CALL getPlayerDataExceptWithDate(?, ?, ?, ?);";
+                    statement = conn.prepareStatement(query);
+                    statement.setString(1, "kills, deaths, bestKillStreak");
+                    statement.setString(2, player.getUniqueId().toString());
+                    statement.setDate(3, new Date(System.currentTimeMillis()));
+                    statement.setString(4, player.getLocation().getWorld().getName());
+                    resultSet = statement.executeQuery();
+                    if (resultSet.next()) {
+                        dataContainer.setMemKills(resultSet.getInt("kills"));
+                        dataContainer.setMemDeaths(resultSet.getInt("deaths"));
+                        dataContainer.setMemBestKillStreak(resultSet.getInt("bestKillStreak"));
+                    }
+                    set(player.getUniqueId(), dataContainer);
                     return null;
                 });
             }
