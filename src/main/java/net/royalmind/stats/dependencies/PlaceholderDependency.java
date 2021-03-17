@@ -20,14 +20,22 @@ public class PlaceholderDependency extends PlaceholderExpansion {
         final UUID uniqueId = player.getUniqueId();
         if (!(this.statsContainer.contains(uniqueId))) return null;
         final StatsDataContainer dataContainer = this.statsContainer.get(uniqueId);
-        if (identifier.equalsIgnoreCase("kills")) {
+        if (identifier.equalsIgnoreCase("monthly_kills")) {
             return String.valueOf(dataContainer.getKills());
-        } else if (identifier.equalsIgnoreCase("deaths")) {
+        } else if (identifier.equalsIgnoreCase("monthly_deaths")) {
             return String.valueOf(dataContainer.getDeaths());
-        } else if (identifier.equalsIgnoreCase("currentks")) {
-            return String.valueOf(dataContainer.getCurrentKillStreak());
-        } else if (identifier.equalsIgnoreCase("bestks")) {
+        } else if (identifier.equalsIgnoreCase("monthly_bestks")) {
             return String.valueOf(dataContainer.getBestKillStreak());
+        } else if (identifier.equalsIgnoreCase("lifetime_kills")) {
+            return String.valueOf(dataContainer.getAllKills());
+        } else if (identifier.equalsIgnoreCase("lifetime_deaths")) {
+            return String.valueOf(dataContainer.getAllDeaths());
+        } else if (identifier.equalsIgnoreCase("lifetime_bestks")) {
+            return String.valueOf(dataContainer.getAllBestKillstreak());
+        } else if (identifier.equalsIgnoreCase("current_ks")) {
+            return String.valueOf(dataContainer.getCurrentKillStreak());
+        } else if (identifier.equalsIgnoreCase("lifetime_kd")) {
+            return String.valueOf(dataContainer.getAllKills() / dataContainer.getAllDeaths());
         }
         return null;
     }
