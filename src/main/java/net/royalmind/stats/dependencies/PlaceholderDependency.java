@@ -32,10 +32,11 @@ public class PlaceholderDependency extends PlaceholderExpansion {
             return String.valueOf(dataContainer.getAllDeaths());
         } else if (identifier.equalsIgnoreCase("lifetime_bestks")) {
             return String.valueOf(dataContainer.getAllBestKillstreak());
+        } else if (identifier.equalsIgnoreCase("lifetime_kd")) {
+            if (dataContainer.getAllKills() <= 0 || dataContainer.getAllDeaths() <= 0) return "0";
+            return String.valueOf(dataContainer.getAllKills() / dataContainer.getAllDeaths());
         } else if (identifier.equalsIgnoreCase("current_ks")) {
             return String.valueOf(dataContainer.getCurrentKillStreak());
-        } else if (identifier.equalsIgnoreCase("lifetime_kd")) {
-            return String.valueOf(dataContainer.getAllKills() / dataContainer.getAllDeaths());
         }
         return null;
     }
