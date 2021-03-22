@@ -34,6 +34,10 @@ public class StatsCommand implements CommandExecutor {
             final long reloadTime = this.files.reload();
             player.sendMessage(Chat.translate("&aPlugin recargado en &e" + reloadTime + " &ams"));
         } else if (args[0].equalsIgnoreCase("leaderboard")) {
+            if (args.length <= 1 || args[1].isEmpty()) {
+                player.sendMessage(Chat.translate("&c/stats leaderboard (list/set/delete)"));
+                return true;
+            }
             if (args[1].equalsIgnoreCase("list")) {
                 player.sendMessage(Chat.translate("&e&lLeaderboard"));
                 for (final LeaderboardDataContainer value : this.leaderboardContainer.getValues()) {
