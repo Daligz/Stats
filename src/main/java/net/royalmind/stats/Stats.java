@@ -38,12 +38,12 @@ public final class Stats extends JavaPlugin {
                 this.files.getConfig().getFileConfiguration());
         dependeciesLoader();
         registerEvents();
-        registerCommands();
         new BukkitRunnable() {
             @Override
             public void run() {
                 files.loadBefore();
                 leaderboardContainer = new LeaderboardContainerImpl(files.getConfigLeaderboard(), topsContainer, instance);
+                registerCommands();
             }
         }.runTaskLater(this, 5L);
     }
