@@ -35,7 +35,7 @@ public class DataSource {
     }
 
     public void close() {
-        if (this.ds == null || !(this.ds.isClosed())) return;
+        if (this.ds == null || this.ds.isClosed()) return;
         this.ds.close();
     }
 
